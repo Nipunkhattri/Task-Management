@@ -31,16 +31,7 @@ export const CreateContact = async (req, res) => {
 
 export const GetContacts = async (req, res) => {
     try {
-        const { sortField = 'lastName', sortOrder = 'asc' } = req.query;
-
-        const sort = {
-            [sortField]: sortOrder === 'asc' ? 1 : -1
-        };
-
         const contacts = await Contact.find()
-            .sort(sort)
-            .select('-__v');
-
         res.json(contacts);
     } catch (err) {
         console.error(err);

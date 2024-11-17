@@ -51,13 +51,14 @@ const ContactManagement = () => {
   const fetchContacts = async () => {
     try {
       const { data } = await axios.get(`${BACKEND_URL}/api/contacts`);
+      console.log(data)
       setContacts(data);
     } catch (err) {
       setError('Failed to load contacts');
     }
   };
 
-  // Edit the Contact with id or update the contact 
+  // Edit the Contact with id or create the contact 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -65,13 +66,15 @@ const ContactManagement = () => {
         ? `${BACKEND_URL}/api/contacts/${editId}`
         : `${BACKEND_URL}/api/contacts`;
       const method = editMode ? axios.put : axios.post;
-
-      await method(url, formData);
+      const res = await method(url, formData);
+      console.log(res)
       await fetchContacts();
       resetForm();
       setOpenDialog(false);
     } catch (err) {
-      setError('Failed to save contact');
+      console.log(err)
+      const error = err.response.data.errors[0]
+      setError(`${error}`);
     }
   };
 
