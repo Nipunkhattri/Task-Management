@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const Api = axios.create({
-    baseURL: 'http://localhost:5000',
+    baseURL: 'https://task-management-eejb.onrender.com',
     headers: {
         'Content-type': 'application/json'
     }
