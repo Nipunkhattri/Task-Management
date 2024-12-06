@@ -2,7 +2,9 @@ import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose';
-import ContactRoute from './routes/ContactRoute.js'
+import AuthRoute from './routes/AuthRoute.js'
+import TaskRoute from './routes/TaskRoute.js'
+
 const app = express();
 
 app.use(express.json({limit:'30mb',extended:true}))
@@ -12,7 +14,8 @@ dotenv.config();
 
 app.use(cors());
 
-app.use('/api',ContactRoute);
+app.use('/auth',AuthRoute);
+app.use('/api',TaskRoute);
 
 app.get('/',(req,res)=>{
     res.json({
