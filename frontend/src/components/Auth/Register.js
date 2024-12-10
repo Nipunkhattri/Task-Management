@@ -3,6 +3,7 @@ import { TextField, Button, Container, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { register } from '../../redux/features/AuthSlice.js';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -12,6 +13,8 @@ const Register = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const mode = useSelector(state => state.theme.mode)
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -28,9 +31,9 @@ const Register = () => {
     }
 
     return (
-<div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className={mode == 'light'?' min-h-screen bg-white text-black flex flex-col justify-center py-12 sm:px-6 lg:px-8' : ' min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-black text-white'}>
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
-                <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                <h2 className="mt-6 text-center text-3xl font-extrabold ">
                     Create your account
                 </h2>
             </div>

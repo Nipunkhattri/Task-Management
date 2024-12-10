@@ -28,6 +28,7 @@ export const createTask = (taskData) => Api.post('/api/admin/tasks', taskData);
 export const updateTask = (taskId, taskData) => Api.put(`/api/admin/tasks/${taskId}`, taskData);
 export const deleteTask = (taskId) => Api.delete(`/api/admin/tasks/${taskId}`);
 export const deleteUser = (userId) => Api.delete(`/api/admin/users/${userId}`);
+export const getAllUser = () => Api.get('/api/admin/users')
 
 // User Task Management endpoints
 export const getUserTasks = () => Api.get('/api/tasks');

@@ -5,6 +5,7 @@ import * as api from '../api';
 const initialState = {
     allUserTasks: [], // For admin dashboard
     userTasks: [],    // For user dashboard
+    userlist :[],
     loading: false,
     error: null,
 };
@@ -60,6 +61,9 @@ const DashboardSlice = createSlice({
                 userTasks.user._id !== action.payload
             );
             state.loading = false;
+        },
+        UpdateUserList : (state, action) => {
+            state.userlist = action.payload.data
         }
     }
 });
@@ -72,7 +76,8 @@ export const {
     createTaskSuccess,
     updateTaskSuccess,
     deleteTaskSuccess,
-    deleteUserSuccess
+    deleteUserSuccess,
+    UpdateUserList
 } = DashboardSlice.actions;
 
 // Admin Thunk actions
@@ -157,6 +162,17 @@ export const updateTaskStatus = ({taskId, status}) => async (dispatch) => {
         dispatch(updateTaskSuccess(data));
     } catch (error) {
         dispatch(fetchTasksFailure(error.message));
+    }
+}
+
+export const getalluser = () => async (dispatch) =>{
+    dispatch(fetchTasksStart());
+    try {
+        const data = await api.getAllUser();
+        console.log(data);
+        dispatch(UpdateUserList(data));
+    } catch (error) {
+        dispatch(fetchTasksFailure(error.message))
     }
 }
 

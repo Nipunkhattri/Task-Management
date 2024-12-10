@@ -1,7 +1,7 @@
-// 1. TaskController.js
 import TaskModel from '../models/TaskModel.js';
 import UserModel from '../models/AuthModel.js';
 
+// 1. Get all the users and their tasks
 export const getAllUserTasks = async (req, res) => {
     try {
         const tasks = await TaskModel.find().populate('AssignedUser');
@@ -33,13 +33,28 @@ export const createTask = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        const task = new TaskModel({
-            TaskName,
-            TaskDeadline,
-            TaskDescription,
-            TaskStatus,
-            AssignedUser: user._id
-        });
+        const role = req.user.role;
+        let task;
+
+        if(role == 'Admin'){   
+            task = new TaskModel({
+                TaskName,
+                TaskDeadline,
+                TaskDescription,
+                TaskStatus,
+                AssignedUser: user._id,
+                UserTaskValidation : 'Approved'
+            });
+        }
+        else{
+            task = new TaskModel({
+                TaskName,
+                TaskDeadline,
+                TaskDescription,
+                TaskStatus,
+                AssignedUser: user._id
+            });
+        }
 
         await task.save();
         res.status(201).json(task);
@@ -125,6 +140,19 @@ export const deleteUser = async (req, res) => {
         }
         await TaskModel.deleteMany({ AssignedUser: req.params.userId });
         res.status(200).json({ message: 'User and their tasks deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+// Get all users
+export const getAllUsers = async (req, res) => {
+    try {
+        const users = await UserModel.find({ role: { $ne: 'Admin' } })
+            .select('-password')
+            .sort({ createdAt: -1 });
+        
+        res.status(200).json(users);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }

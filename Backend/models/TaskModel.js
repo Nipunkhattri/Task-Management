@@ -17,6 +17,10 @@ const TaskSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    UserTaskValidation: {
+        type: String,
+        default:'Not Approved'
+    },
     AssignedUser: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
